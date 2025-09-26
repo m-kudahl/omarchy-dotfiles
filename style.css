@@ -1,0 +1,266 @@
+/* Import FIRST so theme variables exist */
+@import "../omarchy/current/theme/waybar.css";
+
+/* Variables that depend on the imported theme */
+@define-color base-bg   @background;
+@define-color accent    @foreground;
+@define-color hover-bg  alpha(@background, 0.7);
+@define-color warning   #e5c07b;
+@define-color critical  #e06c75;
+@define-color inactive  #6a7a71;
+
+/* ── Resets ─────────────────────────────────────────────────── */
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "CaskaydiaMono Nerd Font";
+  font-size: 14px;
+  font-weight: bold;
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  margin-top: 10px;
+}
+
+/* ── General Module Styles ──────────────────────────────────── */
+#cpu,
+#memory,
+#temperature,
+#custom-update,
+#custom-weather,
+#bluetooth,
+#network,
+#pulseaudio,
+#battery,
+#custom-omarchy,
+#clock {
+  background-color: @background;
+  color: @foreground;
+  padding: 0 10px;
+  margin: 5px 0; /* vertical margin only */
+  transition: background-color 0.3s ease;
+}
+
+/* Slightly tighter for the left cluster */
+#cpu,
+#memory,
+#temperature {
+  padding: 0 6px;
+}
+
+/* Consistent hover */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#custom-update:hover,
+#bluetooth:hover,
+#network:hover,
+#pulseaudio:hover,
+#battery:hover,
+#custom-omarchy:hover {
+  background-color: @hover-bg;
+}
+
+/* ── Window title (center) ──────────────────────────────────── */
+#window {
+  margin: 5px 0;
+  background: @background;
+  padding: 0 10px;
+  border-radius: 16px;
+  margin-left: 10px;
+  color: @foreground;
+}
+
+window#waybar.empty #window {
+  background: transparent;
+  padding: 0;
+  margin-left: 0;
+}
+
+/* ── Left cluster: CPU | Memory | Temp ──────────────────────── */
+#cpu {
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+#memory {
+  border-radius: 0;
+} /* middle segment */
+
+#temperature {
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding-right: 10px;
+}
+
+/* ── Update module ──────────────────────────────────────────── */
+#custom-update {
+  border-radius: 16px;
+  margin-left: 10px;
+  padding-right: 12px;
+}
+
+/* ── Workspaces ─────────────────────────────────────────────── */
+#workspaces {
+  background-color: @background;
+  color: @foreground;
+  margin: 5px 0;
+  transition: background-color 0.3s ease;
+  border-radius: 16px;
+  padding: 0 3px;
+}
+
+#workspaces button {
+  color: @inactive;
+  background: transparent;
+  padding: 0 6px;
+  border-radius: 10px;
+}
+
+/* Use rgba instead of alpha(#hex, …) for parser compatibility */
+#workspaces button:hover {
+  background-color: rgba(185, 246, 202, 0.1);
+}
+
+#workspaces button.active {
+  color: @accent;
+}
+
+/* ── MPRIS & Screenrecorder pills ───────────────────────────────────────────────────── */
+#mpris,
+#custom-screenrecording-indicator {
+  background-color: @background;
+  color: @foreground;
+  padding: 0 10px;
+  margin: 5px 6px;
+  border-radius: 16px;
+  transition: background-color 0.3s ease;
+}
+
+#mpris.empty {
+  background-color: transparent;
+  color: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* ── RIGHT-SIDE PILL SHAPE ─────────────────────────────────
+    Weather | Bluetooth | Network | Audio | Battery | Omarchy
+   ──────────────────────────────────────────────────────────── */
+
+/* Normalize look across cluster segments (no horizontal margins) */
+#custom-weather,
+#bluetooth,
+#network,
+#pulseaudio,
+#battery,
+#custom-omarchy {
+  background-color: @background;
+  color: @foreground;
+  padding: 0 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* First segment (left end) */
+#custom-weather {
+  margin-left: 10px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Middle segments (square corners) */
+#bluetooth,
+#network,
+#pulseaudio,
+#battery {
+  border-radius: 0;
+}
+
+/* Last segment (right end) = Omarchy */
+#custom-omarchy {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  margin-right: 10px; /* small gap AFTER the cluster before clock */
+}
+
+/* ── Clock (separate pill to the right) ─────────────────────── */
+#clock {
+  background-color: @accent;
+  color: @base-bg;
+  border-radius: 16px;
+  margin-right: 10px;
+  padding-right: 10px;
+}
+
+#clock:hover {
+  background-color: @background;
+  color: @foreground;
+}
+
+/* ── Module States ─────────────────────────────────────────── */
+#network.disconnected,
+#bluetooth.disabled,
+#pulseaudio.muted {
+  color: @critical;
+}
+
+#battery.warning:not(.charging) {
+  color: @warning;
+}
+#battery.charging,
+#battery.plugged {
+  color: @accent;
+}
+
+/* Blink for critical battery */
+@keyframes blink {
+  to {
+    background-color: @critical;
+    color: @base-bg;
+  }
+}
+
+#battery.critical:not(.charging) {
+  background-color: @critical;
+  color: @base-bg;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* ── Tooltip ───────────────────────────────────────────────── */
+tooltip {
+  background-color: @background;
+  border: 2px solid @accent;
+  border-radius: 16px;
+  padding: 8px 12px;
+}
+
+tooltip label {
+  color: @foreground;
+}
+
+/* ── Omarchy Screen Recording Indicator ─────────────────────── */
+#custom-screenrecording-indicator {
+  margin-left: 10px;
+  min-width: 12px;
+  font-size: 10px;
+}
+
+#custom-screenrecording-indicator.active {
+  color: #a55555;
+}

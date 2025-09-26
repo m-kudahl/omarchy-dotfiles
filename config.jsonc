@@ -1,0 +1,180 @@
+{
+  "margin-top": 2,
+  "margin-left": 2,
+  "margin-right": 2,
+  "height": 35,
+  "spacing": 0,
+
+  "modules-left": ["cpu", "memory", "temperature", "hyprland/window"],
+  "modules-center": ["hyprland/workspaces", "custom/update", "custom/screenrecording-indicator"],
+  "modules-right": [
+     "mpris",
+    "custom/weather",
+    "bluetooth",
+    "network",
+    "pulseaudio",
+    "battery",
+    "custom/omarchy",
+    "clock"
+  ],
+
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 30,
+    "tooltip": false
+  },
+
+  "cpu": {
+    "interval": 5,
+    "format": "{usage}%",
+    "on-click": "alacritty -e btop"
+  },
+    "custom/weather": {
+    "format": "{}°",
+    "tooltip": true,
+    "interval": 600,
+    "exec": "wttrbar",
+    "return-type": "json"
+  },
+
+  "memory": {
+    "format": "{used:0.1f}G",
+    "interval": 2,
+    "on-click": "alacritty -e btop",
+    "tooltip": false
+  },
+
+  "temperature": {
+    "thermal-zone": 2,
+    "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    "format": "{temperatureC}°C",
+    "tooltip": false
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "default": "",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "active": "󱓻"
+    },
+    "persistent-workspaces": { "1": [], "2": [], "3": [] },
+    "sort-by-number": true
+  },
+
+  "custom/update": {
+    "format": "",
+    "exec": "omarchy-update-available",
+    "on-click": "alacritty --class Omarchy --title Omarchy -e omarchy-update",
+    "tooltip-format": "Omarchy update available",
+    "signal": 7,
+    "interval": 3600
+  },
+
+  "mpris": {
+    "format": "{player_icon} {artist} - {title}",
+    "format-paused": "{status_icon} <i>{artist} - {title}</i>",
+    "format-stopped": "🎵",
+    "player-icons": { "default": "🎵", "mpv": "🎵", "spotify": "" },
+    "status-icons": { "paused": "⏸" },
+    "max-length": 50,
+    "tooltip-format": "{player} — {status}\n{artist} — {title}\nAlbum: {album}\n{position:%M:%S}/{length:%M:%S}",
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl stop",
+    "on-scroll-up": "playerctl next",
+    "on-scroll-down": "playerctl previous"
+  },
+
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "blueberry"
+  },
+
+    "custom/screenrecording-indicator": {
+    "on-click": "omarchy-cmd-screenrecord",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json"
+  },
+
+  "network": {
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "nospacing": 1,
+    "on-click": "alacritty --class=Impala -e impala"
+  },
+
+  "pulseaudio": {
+    "format": "{icon}",
+    "on-click": "alacritty --class=Wiremix -e wiremix",
+    "on-click-right": "pamixer -t",
+    "tooltip-format": "Playing at {volume}%",
+    "scroll-step": 5,
+    "format-muted": "󰝟",
+    "format-icons": { "default": ["", "", ""] }
+  },
+
+  "battery": {
+    "format": "{capacity}% {icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "format-full": "󰂅",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "on-click": "omarchy-menu power",
+    "states": { "warning": 20, "critical": 10 }
+  },
+
+  "custom/omarchy": {
+    "format": "<span font='omarchy'>\uE900</span>",
+    "on-click": "omarchy-menu",
+    "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
+  },
+  "clock": {
+    "format": "{:%A %H:%M}",
+    "format-alt": "{:%a %d %B %Y}",
+    "tooltip": true,
+    "tooltip-format": "<span font='CaskaydiaMono Nerd Font 12'><tt><small>{calendar}</small></tt></span>",
+    "calendar": {
+      "mode": "month",
+      "on-scroll": 1,
+      "format": {
+        "months": "<b>{}</b>",
+        "days": "{}",
+        "today": "<span foreground='#D9AFA7'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down",
+      "on-click-middle": "mode"
+    },
+    "on-click-right": "omarchy-cmd-tzupdate"
+  }
+}
