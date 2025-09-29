@@ -34,7 +34,7 @@
     "format": "{}°",
     "tooltip": true,
     "interval": 600,
-    "exec": "wttrbar",
+    "exec": "wttrbar --observation-time --date-format '%d-%m-%Y' --lang da",
     "return-type": "json"
   },
 
