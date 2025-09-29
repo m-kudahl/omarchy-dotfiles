@@ -88,7 +88,7 @@
     "player-icons": { "default": "🎵", "spotify": "" },
     "status-icons": { "paused": "⏸", "playing": "▶"},
     "max-length": 50,
-    "tooltip-format": "{player_icon} {player} — {status_icon} {status}\n─────────────────────\n👤 {artist}\n🎵 {title}\n💽 {album}",
+    "tooltip-format": "{player_icon} {player}\n{status_icon} {status}\n─────────────────────\n👤 {artist}\n🎵 {title}\n💽 {album}",
     "on-click": "playerctl play-pause",
     "on-click-right": "playerctl stop",
     "on-scroll-up": "playerctl next",
