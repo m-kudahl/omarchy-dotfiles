@@ -26,6 +26,8 @@ window#waybar {
 
 /* ── General Module Styles ──────────────────────────────────── */
 #cpu,
+#tray,
+#tray-expander,
 #memory,
 #temperature,
 #custom-update,
