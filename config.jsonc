@@ -158,16 +158,19 @@
   },
   "clock": {
     "format": "{:%A %H:%M}",
+    "locale": "da_DK.UTF-8",
     "format-alt": "{:%a %d %B %Y}",
     "tooltip": true,
-    "tooltip-format": "<span font='CaskaydiaMono Nerd Font 12'><tt><small>{calendar}</small></tt></span>",
+    "tooltip-format": "<span font='CaskaydiaMono Nerd Font 14'><tt>{calendar}</tt></span>",
     "calendar": {
       "mode": "month",
       "on-scroll": 1,
+      "weeks-pos": "left",
       "format": {
         "months": "<b>{}</b>",
+        "weeks": "<b>U{}</b>",
         "days": "{}",
-        "today": "<span foreground='#D9AFA7'><b><u>{}</u></b></span>"
+        "today": "<span foreground='#9ECE6A'><b><u>{}</u></b></span>"
       }
     },
     "actions": {
