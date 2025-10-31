@@ -9,13 +9,12 @@
   "modules-center": ["hyprland/workspaces", "custom/update", "custom/screenrecording-indicator"],
   "modules-right": [
      "mpris",
-    "custom/weather",
     "group/tray-expander",
+    "pulseaudio",
     "bluetooth",
     "network",
-    "pulseaudio",
     "battery",
-    "custom/omarchy",
+    "custom/weather",
     "clock"
   ],
 
@@ -27,7 +26,7 @@
 
   "cpu": {
     "interval": 5,
-    "format": "{usage}%",
+    "format": "󰍛 {usage}%",
     "on-click": "alacritty -e btop"
   },
     "custom/weather": {
@@ -38,8 +37,17 @@
     "return-type": "json"
   },
 
+"custom/calendar": {
+  "format": "",
+  "tooltip": false,
+
+  "on-click": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=22c -e sh -c 'gcalcli calm; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'",
+
+  "on-click-right": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=12c -e sh -c 'gcalcli calw; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'"
+},
+
   "memory": {
-    "format": "{used:0.1f}G",
+    "format": "  {used:0.1f}G",
     "interval": 2,
     "on-click": "alacritty -e btop",
     "tooltip": false
@@ -82,6 +90,14 @@
     "interval": 3600
   },
 
+    "custom/mirror": {
+    "format": "󰍺 ",
+    "tooltip": true,
+    "tooltip-format": "Mirror display",
+    "on-click": "~/.config/hypr/scripts/toggle-mirror.sh",
+    "interval": 5
+  },
+
   "mpris": {
     "format": "{player_icon} {artist} - {title}",
     "format-paused": "{status_icon} <i>{artist} - {title}</i>",
@@ -101,7 +117,7 @@
       "transition-duration": 600,
       "children-class": "tray-group-item"
     },
-    "modules": ["custom/expand-icon", "tray"]
+    "modules": ["custom/expand-icon", "tray", "custom/mirror", "custom/omarchy"]
   },
     "custom/expand-icon": {
     "format": " ",
@@ -142,12 +158,12 @@
   },
 
   "pulseaudio": {
-    "format": "{icon}",
+    "format": "{icon} {volume}%",
     "on-click": "alacritty --class=Wiremix -e wiremix",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
-    "format-muted": "󰝟",
+    "format-muted": "󰝟 {volume}%",
     "format-icons": { "default": ["", "", ""] }
   },
 
@@ -171,6 +187,7 @@
   "custom/omarchy": {
     "format": "<span font='omarchy'>\uE900</span>",
     "on-click": "omarchy-menu",
+    "on-click-right": "omarchy-launch-terminal",
     "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
   },
   "clock": {
@@ -195,6 +212,6 @@
       "on-scroll-down": "shift_down",
       "on-click-middle": "mode"
     },
-    "on-click-right": "omarchy-cmd-tzupdate"
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
   }
 }
