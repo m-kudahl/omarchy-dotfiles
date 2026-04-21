@@ -1,0 +1,3 @@
+[submodule "waybar-meeting-calendar"]
+	path = scripts/waybar-meeting-calendar
+	url = https://github.com/m-kudahl/waybar-meeting-calendar.git
