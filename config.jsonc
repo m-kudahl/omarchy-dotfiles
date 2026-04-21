@@ -1,56 +1,69 @@
 {
-  "margin-top": 2,
+  "margin-top": 0,
   "margin-left": 2,
   "margin-right": 2,
   "height": 35,
   "spacing": 0,
 
-  "modules-left": ["cpu", "memory", "temperature", "hyprland/window"],
-  "modules-center": ["hyprland/workspaces", "custom/update", "custom/screenrecording-indicator"],
+  "modules-left": [
+    "custom/agenda",
+    //"cpu",
+    //"memory",
+    //"temperature",
+    "hyprland/window",
+  ],
+  "modules-center": [
+    "hyprland/workspaces",
+    "custom/update",
+    "custom/voxtype",
+    "custom/screenrecording-indicator",
+    "custom/idle-indicator",
+    "custom/notification-silencing-indicator",
+  ],
   "modules-right": [
-     "mpris",
+    "mpris",
     "group/tray-expander",
     "pulseaudio",
     "bluetooth",
     "network",
     "battery",
     "custom/weather",
-    "clock"
+    "custom/clock",
   ],
 
   "hyprland/window": {
     "format": "{}",
     "max-length": 30,
-    "tooltip": false
+    "tooltip": false,
   },
 
   "cpu": {
     "interval": 5,
     "format": "󰍛 {usage}%",
-    "on-click": "alacritty -e btop"
+    "on-click": "alacritty -e btop",
   },
-    "custom/weather": {
+  "custom/weather": {
     "format": "{}°",
     "tooltip": true,
     "interval": 600,
-    "exec": "wttrbar --observation-time --date-format '%d-%m-%Y' --lang da",
-    "return-type": "json"
+    "exec": "timeout 10 wttrbar --observation-time --date-format '%d-%m-%Y' --lang da",
+    "return-type": "json",
   },
 
-"custom/calendar": {
-  "format": "",
-  "tooltip": false,
+  "custom/calendar": {
+    "format": "",
+    "tooltip": false,
 
-  "on-click": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=22c -e sh -c 'gcalcli calm; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'",
+    "on-click": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=22c -e sh -c 'gcalcli calm; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'",
 
-  "on-click-right": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=12c -e sh -c 'gcalcli calw; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'"
-},
+    "on-click-right": "kitty --class calendar-term --override initial_window_width=30c --override initial_window_height=12c -e sh -c 'gcalcli calw; echo;while true; do read -rsn1 key; [ \"$key\" = \"\" ] && break; [ \"$key\" = $'\\e' ] && break; done'",
+  },
 
   "memory": {
     "format": "  {used:0.1f}G",
     "interval": 2,
     "on-click": "alacritty -e btop",
-    "tooltip": false
+    "tooltip": false,
   },
 
   "temperature": {
@@ -58,7 +71,7 @@
     "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     "critical-threshold": 80,
     "format": "{temperatureC}°C",
-    "tooltip": false
+    "tooltip": false,
   },
 
   "hyprland/workspaces": {
@@ -75,10 +88,11 @@
       "7": "7",
       "8": "8",
       "9": "9",
-      "active": "󱓻"
+      "10": "0",
+      "active": "󱓻",
     },
     "persistent-workspaces": { "1": [], "2": [], "3": [] },
-    "sort-by-number": true
+    "sort-by-number": true,
   },
 
   "custom/update": {
@@ -87,60 +101,90 @@
     "on-click": "alacritty --class Omarchy --title Omarchy -e omarchy-update",
     "tooltip-format": "Omarchy update available",
     "signal": 7,
-    "interval": 3600
+    "interval": 3600,
   },
 
-    "custom/mirror": {
-    "format": "󰍺 ",
-    "tooltip": true,
-    "tooltip-format": "Mirror display",
-    "on-click": "~/.config/hypr/scripts/toggle-mirror.sh",
-    "interval": 5
+  "custom/agenda": {
+    "format": "{}",
+    //"exec": "nextmeeting --max-title-length 30 --notify-min-before-events 15 --hour-separator : --waybar",
+    "exec": "~/.config/waybar/scripts/waybar-meeting-calendar/nextmeeting-waybar",
+    "on-click": "nextmeeting --open-meet-url",
+    "interval": 59,
+    "return-type": "json",
+    "tooltip": "true",
   },
 
   "mpris": {
+    "player": "spotify",
     "format": "{player_icon} {artist} - {title}",
     "format-paused": "{status_icon} <i>{artist} - {title}</i>",
     "player-icons": { "default": "🎵", "spotify": "" },
-    "status-icons": { "paused": "⏸", "playing": "▶"},
+    "status-icons": { "paused": "⏸", "playing": "▶" },
     "max-length": 50,
     "tooltip-format": "{player_icon} {player}\n{status_icon} {status}\n─────────────────────\n👤 {artist}\n🎵 {title}\n💽 {album}",
-    "on-click": "playerctl play-pause",
-    "on-click-right": "playerctl stop",
-    "on-scroll-up": "playerctl next",
-    "on-scroll-down": "playerctl previous"
+    "on-click": "playerctl -p spotify play-pause",
+    "on-click-right": "playerctl -p spotify stop",
+    "on-scroll-up": "playerctl -p spotify next",
+    "on-scroll-down": "playerctl -p spotify previous",
   },
 
   "group/tray-expander": {
     "orientation": "inherit",
     "drawer": {
       "transition-duration": 600,
-      "children-class": "tray-group-item"
+      "children-class": "tray-group-item",
     },
-    "modules": ["custom/expand-icon", "tray", "custom/mirror", "custom/omarchy"]
+    "modules": ["custom/expand-icon", "tray", "custom/omarchy"],
   },
-    "custom/expand-icon": {
+  "custom/expand-icon": {
     "format": " ",
-    "tooltip": false
+    "tooltip": false,
+  },
+  "custom/voxtype": {
+    "exec": "omarchy-voxtype-status",
+    "return-type": "json",
+    "format": "{icon}",
+    "format-icons": {
+      "idle": "",
+      "recording": "󰍬",
+      "transcribing": "󰔟",
+    },
+    "tooltip": true,
+    "on-click-right": "omarchy-voxtype-config",
+    "on-click": "omarchy-voxtype-model",
+  },
+  "custom/idle-indicator": {
+    "on-click": "omarchy-toggle-idle",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/idle.sh",
+    "signal": 9,
+    "return-type": "json",
+  },
+  "custom/notification-silencing-indicator": {
+    "on-click": "omarchy-toggle-notification-silencing",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/notification-silencing.sh",
+    "signal": 10,
+    "return-type": "json",
   },
   "tray": {
     "icon-size": 12,
-    "spacing": 12
+    "spacing": 12,
   },
 
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
-    "format-connected": "",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "blueberry"
+    "on-click": "omarchy-launch-bluetooth",
   },
 
-    "custom/screenrecording-indicator": {
+  "custom/screenrecording-indicator": {
     "on-click": "omarchy-cmd-screenrecord",
     "exec": "$OMARCHY_PATH/default/waybar/indicators/screen-recording.sh",
     "signal": 8,
-    "return-type": "json"
+    "return-type": "json",
   },
 
   "network": {
@@ -149,12 +193,12 @@
     "format-wifi": "{icon}",
     "format-ethernet": "󰀂",
     "format-disconnected": "󰖪",
-    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)",
+    "tooltip-format-ethernet": "Connected",
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "nospacing": 1,
-    "on-click": "alacritty --class=Impala -e impala"
+    "on-click": "alacritty --class=Impala -e impala",
   },
 
   "pulseaudio": {
@@ -164,7 +208,9 @@
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "󰝟 {volume}%",
-    "format-icons": { "default": ["", "", ""] }
+    "headphone": "",
+    "headset": "",
+    "format-icons": { "default": ["", "", ""] },
   },
 
   "battery": {
@@ -174,44 +220,31 @@
     "format-plugged": "",
     "format-icons": {
       "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     },
     "format-full": "󰂅",
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
     "on-click": "omarchy-menu power",
-    "states": { "warning": 20, "critical": 10 }
+    "states": { "warning": 20, "critical": 10 },
   },
 
   "custom/omarchy": {
     "format": "<span font='omarchy'>\uE900</span>",
     "on-click": "omarchy-menu",
-    "on-click-right": "omarchy-launch-terminal",
-    "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
+    "on-click-right": "xdg-terminal-exec",
+    "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space",
   },
-  "clock": {
-    "format": "{:L%A %H:%M}",
-    "locale": "da_DK.UTF-8",
-    "format-alt": "{:L%a %d %B %Y}",
-    "tooltip": true,
-    "tooltip-format": "<span font='CaskaydiaMono Nerd Font 14'><tt>{calendar}</tt></span>",
-    "calendar": {
-      "mode": "month",
-      "on-scroll": 1,
-      "weeks-pos": "left",
-      "format": {
-        "months": "<b>{}</b>",
-        "weeks": "<b>U{}</b>",
-        "days": "{}",
-        "today": "<span foreground='#9ECE6A'><b><u>{}</u></b></span>"
-      }
-    },
-    "actions": {
-      "on-scroll-up": "shift_up",
-      "on-scroll-down": "shift_down",
-      "on-click-middle": "mode"
-    },
-    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
-  }
+  "custom/clock": {
+    "exec": "~/.config/waybar/scripts/waybar-meeting-calendar/clock-waybar",
+    "interval": 60,
+    "return-type": "json",
+    "on-click": "xdg-open 'https://calendar.google.com'",
+    "on-scroll-up": "~/.config/waybar/scripts/waybar-meeting-calendar/clock-waybar-scroll up",
+    "on-scroll-down": "~/.config/waybar/scripts/waybar-meeting-calendar/clock-waybar-scroll down",
+    "on-click-middle": "~/.config/waybar/scripts/waybar-meeting-calendar/clock-waybar-refresh",
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
+    "signal": 11,
+  },
 }
